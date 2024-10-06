@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+.scrollbar-custom::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  .scrollbar-custom::-webkit-scrollbar-track {
+    background: transparent; /* Transparent track background */
+  }
+  
+  /* Customize or hide scrollbar arrows */
+  .scrollbar-custom::-webkit-scrollbar-button {
+    display: none; /* Hides the top and bottom arrows */
+  }
+  
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background-color: #888; /* Scrollbar thumb */
+    border-radius: 10px; /* Rounded scrollbar thumb */
+  }
+  
+  .scrollbar-custom::-webkit-scrollbar-button {
+    display: none; /* Hides the top and bottom arrows */
+  }
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background-color: #888; /* Customize scrollbar thumb color */
+    border-radius: 10px; /* Optional: Rounded scrollbar thumb */
+  }
+  
+  /* Scrollbar styles for Firefox */
+  .scrollbar-custom {
+    scrollbar-width: thin;
+    scrollbar-color: #92400ea3 white; /* thumb color, track color */
+  }
+  .scrollbar-custom {
+    scrollbar-width: none;
+  }
+
+
+  /* Create a spinner using CSS */
+.loader {
+  border: 4px solid rgba(0, 0, 0, 0.1); /* Light border */
+  border-top: 4px solid #3498db; /* Blue border for animation */
+  border-radius: 50%;
+  width: 30px; /* Loader width */
+  height: 30px; /* Loader height */
+  animation: spin 1s linear infinite; /* Spin animation */
+}
+
+/* Keyframes for loader spin */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
