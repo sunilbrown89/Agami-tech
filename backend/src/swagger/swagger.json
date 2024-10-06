@@ -1,0 +1,350 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Blog API",
+      "description": "API documentation for the Blog Application",
+      "version": "1.0.0"
+    },
+    "host": "localhost:5000",
+    "basePath": "/api",
+    "schemes": ["http"],
+    "paths": {
+      "/auth/signup": {
+        "post": {
+          "tags": ["Auth"],
+          "summary": "User Signup",
+          "description": "Create a new user account",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "user",
+              "description": "User signup data",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["name", "email", "password"]
+              }
+            }
+          ],
+          "responses": {
+            "201": { "description": "User created successfully" },
+            "500": { "description": "Internal server error" }
+          }
+        }
+      },
+      "/auth/login": {
+        "post": {
+          "tags": ["Auth"],
+          "summary": "User Login",
+          "description": "Authenticate a user and return a JWT",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "user",
+              "description": "User login data",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          ],
+          "responses": {
+            "200": { "description": "Login successfully" },
+            "401": { "description": "Invalid user or password" },
+            "500": { "description": "Internal server error" }
+          }
+        }
+      },
+      "/auth/me": {
+        "get": {
+          "tags": ["Auth"],
+          "summary": "Get Authenticated User",
+          "description": "Get details of the authenticated user",
+          "security": [{ "bearerAuth": [] }],
+          "responses": {
+            "200": { "description": "Authenticated user details" },
+            "404": { "description": "User not found" }
+          }
+        }
+      },
+      "/blogs/create-blog": {
+        "post": {
+          "tags": ["Blogs"],
+          "summary": "Create a new blog",
+          "description": "Create a new blog post,any one of field is required",
+          "security": [{ "bearerAuth": [] }],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "blog",
+              "description": "Blog creation data",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "description": { "type": "string" },
+                  "image": { "type": "string" }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "201": { "description": "Blog created successfully" },
+            "500": { "description": "Internal server error" }
+          }
+        }
+      },
+      "/blogs/my-blogs": {
+        "get": {
+          "tags": ["Blogs"],
+          "summary": "Get User Blogs",
+          "description": "Get all blogs created by the authenticated user",
+          "security": [{ "bearerAuth": [] }],
+          "responses": {
+            "200": { "description": "Individual user Blogs fetched successfully  " },
+            "404": { "description": "No blogs found" },
+            "500": { "description": "Internal server error" }
+          }
+        }
+      },
+      "/blogs/get-all-users-blogs": {
+        "get": {
+          "tags": ["Blogs"],
+          "summary": "Get All users blogs",
+          "description": "Get all users blogs",
+          "parameters": [
+            {
+              "in": "query",
+              "name": "title",
+              "description": "Filter blogs by title",
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": { "description": "json blogs" },
+            "500": { "description": "Internal server error" }
+          }
+        }
+      },
+      "/blogs/get-blog/{blogId}": {
+        "get": {
+          "tags": ["Blogs"],
+          "summary": "Get Blog By ID",
+          "description": "Get a blog by its ID",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "blogId",
+              "description": "Blog ID",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": { "description": "return with blog details of specified blog" },
+            "404": { "description": "Blog not found" },
+            "500": { "description": "Internal server error" }
+          }
+        }
+      },
+      "/blogs/update-blog/{blogId}": {
+        "put": {
+          "tags": ["Blogs"],
+          "summary": "Update Blog",
+          "description": "Update a blog by its ID",
+          "security": [{ "bearerAuth": [] }],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "blogId",
+              "description": "Blog ID",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "blog",
+              "description": "Updated blog data",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "description": { "type": "string" },
+                  "image": { "type": "string" }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": { "description": "Blog updated successfully" },
+            "403": { "description": "Not authorized" },
+            "404": { "description": "Blog not found" }
+          }
+        }
+      },
+      "/blogs/delete-blog/{blogId}": {
+        "delete": {
+          "tags": ["Blogs"],
+          "summary": "Delete Blog",
+          "description": "Delete a blog by its ID",
+          "security": [{ "bearerAuth": [] }],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "description": "Blog ID",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": { "description": "Blog deleted successfully" },
+            "404": { "description": "Blog not found" },
+            "500": { "description": "Internal server error" }
+          }
+        }
+      },
+      "/blogs/{blogId}/blog-reaction": {
+        "post": {
+          "tags": ["Reactions"],
+          "summary": "Toggle Blog Reaction",
+          "description": "Add or remove a reaction on a blog",
+          "security": [{ "bearerAuth": [] }],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "blogId",
+              "description": "Blog ID",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "blog",
+              "description": "Updated blog data",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reaction": { "type": "string", "enum": ["like", "dislike"] }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": { "description": "Reaction updated successfully" },
+            "500": { "description": "Internal server error" }
+          }
+        }
+      },
+      "/blogs/{blogId}/blog-comments": {
+        "post": {
+          "tags": ["Comments"],
+          "summary": "Add a Comment",
+          "description": "Add a comment to a specific blog",
+          "security": [{ "bearerAuth": [] }],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "blogId",
+              "description": "Blog ID",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "comment",
+              "description": "Comment data",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": { "type": "string" }
+                },
+                "required": ["text"]
+              }
+            }
+          ],
+          "responses": {
+            "201": { "description": "Comment added successfully" },
+            "500": { "description": "Internal server error" }
+          }
+        }
+      },
+      "/blogs/{blogId}/blog-by-all-comments": {
+        "get": {
+          "tags": ["Comments"],
+          "summary": "Get Comments for Blog",
+          "description": "Get all comments for a specific blog",
+          "security": [{ "bearerAuth": [] }],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "blogId",
+              "description": "Blog ID",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": { "description": "Comments fetched successfully" },
+            "500": { "description": "Internal server error" }
+          }
+        }
+      },
+      "/blogs/{blogId}/comments/{commentId}/comment-reaction": {
+        "put": {
+          "tags": ["Reactions"],
+          "summary": "Toggle Comment Reaction",
+          "description": "Add or remove a reaction on a comment",
+          "security": [{ "bearerAuth": [] }],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "blogId",
+              "description": "Blog ID",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "commentId",
+              "description": "Comment ID",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "blog",
+              "description": "Updated blog data",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reaction": { "type": "string", "enum": ["like", "dislike"] }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": { "description": "Comment reaction updated successfully" },
+            "500": { "description": "Internal server error" }
+          }
+        }
+      }
+    },
+    "securityDefinitions": {
+      "bearerAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "Enter JWT Bearer token"
+      }
+    }
+  }
+  
