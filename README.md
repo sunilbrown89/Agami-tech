@@ -21,7 +21,7 @@ demo video link: [Video presentation of Agami-tech assignment](https://drive.goo
 # Backend: How to clone and run the backend
 1) npm install
 2) npm run start
-3) localhost started with port 8000: http://localhost:5000/
+3) localhost started with port 5000: http://localhost:5000/
 <br>
 
 
